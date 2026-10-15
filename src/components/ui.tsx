@@ -62,7 +62,7 @@ export function FormDots({ form, size = "md" }: { form: Result[]; size?: "sm" | 
         <span
           key={i}
           className={`${dim} rounded-full ${
-            r === "W" ? "bg-accent" : "border-[1.5px] border-muted bg-transparent"
+            r === "W" ? "border-[1.5px] border-accent-edge bg-accent" : "border-[1.5px] border-muted bg-transparent"
           }`}
         />
       ))}
@@ -125,8 +125,8 @@ export function MatchRow({
         </div>
         <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 text-[0.95rem]">
           {cell(match.p1, w1, "right")}
-          <span className="num flex items-center gap-1.5 text-base">
-            <span className={w1 ? "font-semibold" : "text-muted"}>{match.s1}</span>
+          <span className="num grid grid-cols-[1.6rem_auto_1.6rem] items-center gap-1 text-base">
+            <span className={`text-right ${w1 ? "font-semibold" : "text-muted"}`}>{match.s1}</span>
             <span className="text-muted" aria-hidden>
               -
             </span>

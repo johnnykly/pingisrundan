@@ -18,6 +18,8 @@
   --accent: #ff902d;
   --accent-ink: #171617;
   --accent-soft: #ffe4cc;
+  /* Edge for small orange marks so they meet 3:1 non-text contrast on light bg. */
+  --accent-edge: #b85a0c;
   --danger: #b42318;
   --focus: #171617;
   --radius: 12px;
@@ -35,6 +37,7 @@
     --accent: #ff902d;
     --accent-ink: #171617;
     --accent-soft: #3d2a1a;
+    --accent-edge: #ff902d;
     --danger: #ff8a7a;
     --focus: #ff902d;
     color-scheme: dark;
@@ -51,6 +54,7 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-edge: var(--accent-edge);
   --color-danger: var(--danger);
   --radius-box: var(--radius);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;

@@ -9,6 +9,9 @@ const withSerwist = withSerwistInit({
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Render metadata in <head> for every client (not streamed into <body>), so
+  // browsers find the web manifest and iOS meta tags for installability.
+  htmlLimitedBots: /.*/,
   async headers() {
     return [
       {

@@ -17,7 +17,7 @@ function Logo() {
   const { d } = useI18n();
   // Text wordmark until an official HEAR SVG logo is supplied.
   return (
-    <Link href="/" className="flex items-baseline gap-2.5 py-2" aria-label={`${d.app.by} ${d.app.name}`}>
+    <Link href="/" className="flex items-baseline gap-2.5 py-2">
       <span className="text-[1.35rem] font-black leading-none tracking-[-0.04em]">HEAR</span>
       <span className="h-4 w-px self-center bg-line" aria-hidden />
       <span className="text-[0.95rem] font-medium leading-none tracking-tight text-muted">
@@ -37,13 +37,13 @@ function LangToggle() {
           type="button"
           lang={l}
           aria-pressed={lang === l}
-          aria-label={d.lang[l]}
           onClick={() => setLang(l)}
-          className={`min-h-9 min-w-11 rounded-full px-3 text-xs font-semibold uppercase tracking-wide transition-colors ${
+          className={`min-h-11 min-w-11 rounded-full px-3 text-xs font-semibold uppercase tracking-wide transition-colors ${
             lang === l ? "bg-ink text-bg" : "text-muted hover:text-ink"
           }`}
         >
           {l}
+          <span className="sr-only"> {d.lang[l]}</span>
         </button>
       ))}
     </div>
