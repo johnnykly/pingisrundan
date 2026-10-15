@@ -40,7 +40,7 @@ export function HomeView({ data }: { data: Data }) {
           </Link>
         </EmptyState>
       ) : (
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-16">
+        <div className="grid gap-12">
           <section aria-label={d.board.title}>
             <Leaderboard data={data} />
           </section>

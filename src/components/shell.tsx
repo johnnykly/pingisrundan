@@ -96,46 +96,22 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {d.nav.skip}
       </a>
       <header className="pt-safe sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 md:px-6">
+        <div className="mx-auto flex h-16 max-w-lg items-center justify-between gap-4 px-4">
           <Logo />
-          <nav aria-label={d.nav.label} className="hidden items-center gap-1 md:flex">
-            {links.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={isActive(href) ? "page" : undefined}
-                className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
-                  isActive(href) ? "bg-surface-2 text-ink" : "text-muted hover:text-ink"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <LangToggle />
-            <Link
-              href="/ny"
-              aria-current={addActive ? "page" : undefined}
-              className="hidden min-h-11 items-center gap-1.5 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink transition-transform hover:brightness-105 active:scale-[0.98] md:inline-flex"
-            >
-              <Plus weight="bold" aria-hidden />
-              {d.nav.add}
-            </Link>
-          </div>
+          <LangToggle />
         </div>
       </header>
       <OfflineBanner />
 
-      <main id="main" className="mx-auto w-full max-w-5xl px-4 pb-32 pt-6 md:px-6 md:pb-16 md:pt-10">
+      <main id="main" className="mx-auto w-full max-w-lg px-4 pb-32 pt-6">
         {children}
       </main>
 
       <nav
         aria-label={d.nav.label}
-        className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/95 backdrop-blur-md md:hidden"
+        className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/95 backdrop-blur-md"
       >
-        <ul className="mx-auto grid h-16 max-w-md grid-cols-5 items-center">
+        <ul className="mx-auto grid h-16 max-w-lg grid-cols-5 items-center">
           {links.slice(0, 2).map(({ href, label, Icon }) => (
             <NavItem key={href} href={href} label={label} Icon={Icon} active={isActive(href)} />
           ))}

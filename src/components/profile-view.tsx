@@ -6,7 +6,7 @@ import { ArrowLeft, CaretRight } from "@phosphor-icons/react";
 import { useI18n } from "@/i18n/provider";
 import { activeMatches, newestFirst, opponents, playerStats } from "@/lib/stats";
 import type { Data } from "@/lib/types";
-import { EmptyState, FormDots, MatchRow, SectionTitle, StreakLabel } from "./ui";
+import { EmptyState, FormBadges, MatchRow, SectionTitle, StreakLabel } from "./ui";
 
 export function ProfileView({ data, id }: { data: Data; id: string }) {
   const { d } = useI18n();
@@ -62,11 +62,11 @@ export function ProfileView({ data, id }: { data: Data; id: string }) {
     <div className="enter">
       {back}
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
-        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{player.name}</h1>
+        <h1 className="text-4xl font-semibold tracking-tight">{player.name}</h1>
         {stats.played > 0 && (
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted">{d.profile.form}</span>
-            <FormDots form={stats.form} />
+            <FormBadges form={stats.form} />
           </div>
         )}
       </div>
@@ -77,7 +77,7 @@ export function ProfileView({ data, id }: { data: Data; id: string }) {
         </div>
       ) : (
         <>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 py-8 sm:grid-cols-3 lg:grid-cols-6">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 py-8">
             {stat(
               d.profile.record,
               <>
@@ -104,7 +104,7 @@ export function ProfileView({ data, id }: { data: Data; id: string }) {
             )}
           </dl>
 
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="grid gap-12">
             <section aria-labelledby="vs">
               <SectionTitle id="vs">{d.profile.vs}</SectionTitle>
               <ul className="mt-2 divide-y divide-line/70">

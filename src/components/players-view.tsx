@@ -10,7 +10,7 @@ import { useI18n } from "@/i18n/provider";
 import { activeMatches, playerStats } from "@/lib/stats";
 import type { Data } from "@/lib/types";
 import { useToast } from "./toast";
-import { EmptyState, FormDots, PageHeader, plural } from "./ui";
+import { EmptyState, FormBadges, PageHeader, plural } from "./ui";
 
 export function PlayersView({ data }: { data: Data }) {
   const { d } = useI18n();
@@ -48,7 +48,7 @@ export function PlayersView({ data }: { data: Data }) {
     <div className="enter">
       <PageHeader title={d.players.title} />
 
-      <form onSubmit={submit} noValidate className="mb-8 sm:max-w-md">
+      <form onSubmit={submit} noValidate className="mb-8">
         <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium">
           {d.players.add}
         </label>
@@ -87,7 +87,7 @@ export function PlayersView({ data }: { data: Data }) {
       {rows.length === 0 ? (
         <EmptyState>{d.players.empty}</EmptyState>
       ) : (
-        <ul className="grid gap-x-8 sm:grid-cols-2">
+        <ul className="grid">
           {rows.map((r) => (
             <li key={r.id} className="border-b border-line/70">
               <Link
@@ -102,7 +102,7 @@ export function PlayersView({ data }: { data: Data }) {
                       : `${plural(r.played, d.players.gamesOne, d.players.games)}, ${r.wins}-${r.losses}`}
                   </span>
                 </span>
-                <FormDots form={r.form} size="sm" />
+                <FormBadges form={r.form} size="sm" />
                 <CaretRight size={16} className="text-muted" aria-hidden />
               </Link>
             </li>

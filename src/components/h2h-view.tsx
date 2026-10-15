@@ -68,7 +68,7 @@ export function H2HView({ data }: { data: Data }) {
     <div className="enter">
       <PageHeader title={d.h2h.title} />
 
-      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-2 sm:max-w-xl">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-2">
         {picker("a", a, b, d.h2h.playerA)}
         <button
           type="button"
@@ -96,7 +96,7 @@ export function H2HView({ data }: { data: Data }) {
               <div className="min-w-0 text-right">
                 <p className="truncate font-medium">{nameA}</p>
               </div>
-              <p className="num flex items-baseline gap-3 text-6xl font-semibold tracking-tight md:text-7xl">
+              <p className="num flex items-baseline gap-3 text-6xl font-semibold tracking-tight">
                 <span className={h.winsA >= h.winsB ? "" : "text-muted"}>{h.winsA}</span>
                 <span className="text-3xl text-muted" aria-hidden>
                   -
@@ -108,7 +108,7 @@ export function H2HView({ data }: { data: Data }) {
               </div>
             </section>
 
-            <dl className="grid grid-cols-2 gap-6 py-6 sm:max-w-md">
+            <dl className="grid grid-cols-2 gap-6 py-6">
               <div>
                 <dt className="text-sm text-muted">{d.h2h.points}</dt>
                 <dd className="num mt-1 text-2xl font-semibold">

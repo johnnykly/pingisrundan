@@ -150,15 +150,15 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
 
   if (saved) {
     return (
-      <div className="enter mx-auto max-w-xl" role="status" aria-live="polite">
-        <div className="rounded-box border border-line bg-surface p-6 md:p-8">
+      <div className="enter" role="status" aria-live="polite">
+        <div className="rounded-box border border-line bg-surface p-6">
           <CheckCircle size={40} weight="fill" className="text-accent" aria-hidden />
           <h1 className="mt-4 text-3xl font-semibold tracking-tight">{d.add.saved}</h1>
           <p className="mt-2 text-lg text-muted">
             {fmt(d.add.savedDetail, { winner: saved.winner, score: saved.score })}
           </p>
           {pending && <p className="mt-1 text-sm text-muted">{d.add.saving}</p>}
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <div className="mt-8 grid gap-3">
             <button
               type="button"
               onClick={reset}
@@ -180,10 +180,10 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
   }
 
   return (
-    <form onSubmit={submit} noValidate className="enter mx-auto max-w-3xl">
+    <form onSubmit={submit} noValidate className="enter">
       <PageHeader title={d.add.title} />
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-2">
+      <div className="mb-6 grid gap-4">
         <fieldset>
           <legend className="mb-2 text-sm font-medium">{d.add.type}</legend>
           <div className="grid grid-cols-2 rounded-full bg-surface-2 p-1">
@@ -231,7 +231,7 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         {([1, 2] as const).map((side) => {
           const other: Side = side === 1 ? 2 : 1;
           const isWinner = winnerSide === side;
@@ -239,7 +239,7 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
           return (
             <fieldset
               key={side}
-              className={`rounded-box border bg-surface p-4 transition-colors md:p-5 ${
+              className={`rounded-box border bg-surface p-4 transition-colors ${
                 isWinner ? "border-accent ring-1 ring-accent" : "border-line"
               }`}
             >
@@ -291,11 +291,11 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
         )}
       </div>
 
-      <div className="sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-10 -mx-4 mt-2 bg-gradient-to-t from-bg via-bg to-bg/0 px-4 pb-3 pt-4 md:static md:mx-0 md:bg-none md:px-0">
+      <div className="sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-10 -mx-4 mt-2 bg-gradient-to-t from-bg via-bg to-bg/0 px-4 pb-3 pt-4">
         <button
           type="submit"
           disabled={pending}
-          className="min-h-14 w-full rounded-full bg-accent px-6 text-lg font-semibold text-accent-ink transition-transform active:scale-[0.98] disabled:opacity-60 md:w-auto md:min-w-64"
+          className="min-h-14 w-full rounded-full bg-accent px-6 text-lg font-semibold text-accent-ink transition-transform active:scale-[0.98] disabled:opacity-60"
         >
           {pending ? d.add.saving : d.add.save}
         </button>

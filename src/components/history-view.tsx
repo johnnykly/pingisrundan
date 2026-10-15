@@ -88,7 +88,7 @@ export function HistoryView({ data }: { data: Data }) {
         </p>
       </PageHeader>
 
-      <div className="mb-4 grid grid-cols-2 gap-3 sm:max-w-md">
+      <div className="mb-4 grid grid-cols-2 gap-3">
         <div>
           <label htmlFor="f-player" className="mb-1.5 block text-sm font-medium">
             {d.history.player}

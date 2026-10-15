@@ -11,8 +11,8 @@ import type { Match, Player } from "@/lib/types";
 
 export function PageHeader({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3 md:mb-8">
-      <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
       {children}
     </div>
   );
@@ -51,9 +51,10 @@ export function LoadError({ error }: { error: "config" | "loadFailed" }) {
   );
 }
 
-export function FormDots({ form, size = "md" }: { form: Result[]; size?: "sm" | "md" }) {
+/** Last results as letter badges, oldest first: V/F in Swedish, W/L in English. */
+export function FormBadges({ form, size = "md" }: { form: Result[]; size?: "sm" | "md" }) {
   const { d } = useI18n();
-  const dim = size === "sm" ? "size-2.5" : "size-3.5";
+  const dim = size === "sm" ? "size-[1.15rem] text-[0.65rem]" : "size-6 text-xs";
   if (!form.length) return <span className="text-sm text-muted">-</span>;
   const label = form.map((r) => (r === "W" ? d.profile.formWin : d.profile.formLoss)).join(", ");
   return (
@@ -61,10 +62,13 @@ export function FormDots({ form, size = "md" }: { form: Result[]; size?: "sm" | 
       {form.map((r, i) => (
         <span
           key={i}
-          className={`${dim} rounded-full ${
-            r === "W" ? "border-[1.5px] border-accent-edge bg-accent" : "border-[1.5px] border-muted bg-transparent"
+          aria-hidden
+          className={`${dim} grid place-items-center rounded-[6px] font-bold leading-none text-on-result ${
+            r === "W" ? "bg-win" : "bg-loss"
           }`}
-        />
+        >
+          {r === "W" ? d.streak.win : d.streak.loss}
+        </span>
       ))}
     </span>
   );

@@ -7,7 +7,7 @@ import { fmt } from "@/i18n";
 import { useI18n } from "@/i18n/provider";
 import { leaderboard, MIN_GAMES, type SortKey } from "@/lib/stats";
 import type { Data } from "@/lib/types";
-import { FormDots, StreakLabel } from "./ui";
+import { FormBadges, StreakLabel } from "./ui";
 
 export function Leaderboard({ data }: { data: Data }) {
   const { d, lang } = useI18n();
@@ -31,7 +31,7 @@ export function Leaderboard({ data }: { data: Data }) {
     { key: "wins", label: d.board.wins, long: d.board.winsLong },
     { key: "losses", label: d.board.losses, long: d.board.lossesLong },
     { key: "winPct", label: d.board.winPct, long: d.board.winPct },
-    { key: "played", label: d.board.played, long: d.board.playedLong, className: "hidden sm:table-cell" },
+    { key: "played", label: d.board.played, long: d.board.playedLong },
     { key: "streak", label: d.board.streak, long: d.board.streak },
   ];
 
@@ -48,7 +48,7 @@ export function Leaderboard({ data }: { data: Data }) {
           type="button"
           onClick={() => toggle(key)}
           title={fmt(d.board.sortBy, { col: long })}
-          className={`flex min-h-11 w-full items-center gap-0.5 px-2 text-xs uppercase tracking-wide ${
+          className={`flex min-h-11 w-full items-center gap-0.5 px-1.5 text-xs uppercase tracking-wide ${
             align === "right" ? "justify-end" : "justify-start"
           } ${active ? "text-ink" : "text-muted hover:text-ink"}`}
         >
@@ -68,7 +68,7 @@ export function Leaderboard({ data }: { data: Data }) {
   let rank = 0;
   return (
     <div>
-      <div className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
+      <div className="-mx-4 overflow-x-auto px-4">
         <table className="w-full border-collapse text-left" lang={lang}>
           <thead>
             <tr className="border-b border-line">
@@ -77,9 +77,6 @@ export function Leaderboard({ data }: { data: Data }) {
               </th>
               {header("name", d.board.player, d.board.player, "left")}
               {cols.map((c) => header(c.key, c.label, c.long, "right", c.className))}
-              <th scope="col" className="hidden px-2 text-right text-xs font-medium uppercase tracking-wide text-muted md:table-cell">
-                {d.board.form}
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -104,25 +101,24 @@ export function Leaderboard({ data }: { data: Data }) {
                       <span title={d.board.unranked}>-</span>
                     )}
                   </td>
-                  <td className="max-w-[11rem] px-2 py-3">
+                  <td className="max-w-[9rem] px-1.5 py-3">
                     <Link href={`/spelare/${r.id}`} className="block truncate font-medium hover:underline">
                       {r.name}
                     </Link>
-                    <span className="mt-1 block md:hidden">
-                      <FormDots form={r.form} size="sm" />
-                    </span>
+                    {r.form.length > 0 && (
+                      <span className="mt-1.5 block">
+                        <FormBadges form={r.form} size="sm" />
+                      </span>
+                    )}
                   </td>
-                  <td className="num px-2 py-3 text-right">{r.wins}</td>
-                  <td className="num px-2 py-3 text-right text-muted">{r.losses}</td>
-                  <td className="num px-2 py-3 text-right font-semibold">
+                  <td className="num px-1.5 py-3 text-right">{r.wins}</td>
+                  <td className="num px-1.5 py-3 text-right text-muted">{r.losses}</td>
+                  <td className="num px-1.5 py-3 text-right font-semibold">
                     {r.winPct == null ? <span className="font-normal text-muted">-</span> : pct.format(r.winPct)}
                   </td>
-                  <td className="num hidden px-2 py-3 text-right text-muted sm:table-cell">{r.played}</td>
-                  <td className="px-2 py-3 text-right text-sm">
+                  <td className="num px-1.5 py-3 text-right text-muted">{r.played}</td>
+                  <td className="px-1.5 py-3 text-right text-sm">
                     <StreakLabel streak={r.current} />
-                  </td>
-                  <td className="hidden px-2 py-3 text-right md:table-cell">
-                    <FormDots form={r.form} />
                   </td>
                 </tr>
               );
