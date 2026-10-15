@@ -42,6 +42,8 @@ export const en: Dict = {
     saving: "Saving",
     saved: "Game saved",
     savedDetail: "{winner} won {score}.",
+    undo: "Undo and edit",
+    undone: "Game removed. Fix it and save again.",
     addAnother: "Add another",
     viewStandings: "See standings",
     rules11: "First to 11, two serves each, win by 2.",

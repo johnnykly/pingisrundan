@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
-import { CheckCircle, Minus, Plus, Trophy } from "@phosphor-icons/react";
-import { addMatch, addPlayer, type ActionError } from "@/app/actions";
+import { ArrowCounterClockwise, CheckCircle, Minus, Plus, Trophy } from "@phosphor-icons/react";
+import { addMatch, addPlayer, setMatchDeleted, type ActionError } from "@/app/actions";
 import { fmt } from "@/i18n";
 import { useI18n } from "@/i18n/provider";
+import { todayStockholm } from "@/lib/date";
 import { GAME_TYPES, MAX_SCORE, validateScore } from "@/lib/rules";
+import { useOnForeground } from "@/lib/use-foreground";
 import type { GameType, Player } from "@/lib/types";
+import { useToast } from "./toast";
 import { PageHeader } from "./ui";
 
 const LAST_PAIR_KEY = "pingis.lastPair";
@@ -29,6 +32,8 @@ type Side = 1 | 2;
 interface Saved {
   winner: string;
   score: string;
+  /** Set once the server has stored the game; enables undo. */
+  id?: string;
 }
 
 export function AddMatchForm({ players: initialPlayers, today }: { players: Player[]; today: string }) {
@@ -36,7 +41,10 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
   const router = useRouter();
   const [players, setPlayers] = useState(initialPlayers);
   const [type, setType] = useState<GameType>(11);
+  const [maxDate, setMaxDate] = useState(today);
   const [date, setDate] = useState(today);
+  // Whether the user picked a date themselves. If not, the date follows "today".
+  const dateTouched = useRef(false);
   const [p, setP] = useState<Record<Side, string>>({ 1: "", 2: "" });
   const [s, setS] = useState<Record<Side, string>>({ 1: "", 2: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -45,6 +53,17 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
   const [pending, startTransition] = useTransition();
   const matchId = useRef(newMatchId());
   const errorId = useId();
+  const toast = useToast();
+
+  // Keep "today" current: the app can stay open (or resume from the background)
+  // past midnight, so recompute it on load, on refresh and when it comes back.
+  const syncToday = () => {
+    const t = todayStockholm();
+    setMaxDate(t);
+    if (!dateTouched.current) setDate(t);
+  };
+  useEffect(syncToday, [today]);
+  useOnForeground(syncToday);
 
   // Keep server-provided players in sync (e.g. after router.refresh()).
   useEffect(() => {
@@ -110,6 +129,27 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
     matchId.current = newMatchId();
   };
 
+  // Remove the game just saved and return to the form with the same values to fix it.
+  const undo = () => {
+    const id = saved?.id;
+    if (!id) return;
+    startTransition(async () => {
+      const res = await setMatchDeleted(id, true).catch(() => ({
+        ok: false as const,
+        error: "server" as const,
+      }));
+      if (!res.ok) {
+        toast({ message: d.errors[res.error], tone: "error" });
+        return;
+      }
+      setSaved(null);
+      setSubmitted(false);
+      matchId.current = newMatchId();
+      toast({ message: d.add.undone, duration: 4000 });
+      router.refresh();
+    });
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
@@ -143,6 +183,7 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
         setSaved(null);
         setServerError(res.error);
       } else {
+        setSaved((cur) => (cur ? { ...cur, id: res.value.id } : cur));
         router.refresh();
       }
     });
@@ -173,6 +214,15 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
             >
               {d.add.viewStandings}
             </Link>
+            <button
+              type="button"
+              onClick={undo}
+              disabled={pending || !saved.id}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold text-muted hover:text-ink disabled:opacity-50"
+            >
+              <ArrowCounterClockwise size={16} weight="bold" aria-hidden />
+              {d.add.undo}
+            </button>
           </div>
         </div>
       </div>
@@ -220,10 +270,11 @@ export function AddMatchForm({ players: initialPlayers, today }: { players: Play
             id="date"
             type="date"
             value={date}
-            max={today}
+            max={maxDate}
             required
             onChange={(e) => {
               setDate(e.target.value);
+              dateTouched.current = e.target.value !== maxDate;
               setServerError(null);
             }}
             className="min-h-[3.25rem] w-full rounded-box border border-line bg-surface px-4 text-base"

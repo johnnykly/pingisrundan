@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { ArrowsLeftRight } from "@phosphor-icons/react";
 import { useI18n } from "@/i18n/provider";
-import { headToHead } from "@/lib/stats";
+import { activeMatches, headToHead, newestFirst } from "@/lib/stats";
 import type { Data } from "@/lib/types";
 import { EmptyState, MatchRow, PageHeader } from "./ui";
 
@@ -22,8 +22,13 @@ export function H2HView({ data }: { data: Data }) {
     [data.players],
   );
 
-  const a = players.has(params.get("a") ?? "") ? params.get("a")! : "";
-  const b = players.has(params.get("b") ?? "") ? params.get("b")! : "";
+  // With no players chosen, default to the pair from the most recent game.
+  const latest = useMemo(() => newestFirst(activeMatches(data))[0], [data]);
+  const noChoice = !params.has("a") && !params.has("b");
+  const pa = noChoice ? latest?.p1 : params.get("a");
+  const pb = noChoice ? latest?.p2 : params.get("b");
+  const a = pa && players.has(pa) ? pa : "";
+  const b = pb && players.has(pb) ? pb : "";
   const ready = a && b && a !== b;
   const h = useMemo(() => (ready ? headToHead(data, a, b) : null), [data, a, b, ready]);
 

@@ -40,6 +40,8 @@ export const sv = {
     saving: "Sparar",
     saved: "Matchen är sparad",
     savedDetail: "{winner} vann {score}.",
+    undo: "Ångra och rätta",
+    undone: "Matchen togs bort. Rätta och spara igen.",
     addAnother: "Registrera en till",
     viewStandings: "Se ställningen",
     rules11: "Först till 11, två server var, vinn med 2.",

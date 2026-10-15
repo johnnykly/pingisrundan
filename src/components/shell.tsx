@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ClockCounterClockwise,
   Plus,
@@ -11,7 +11,8 @@ import {
 } from "@phosphor-icons/react";
 import { useI18n } from "@/i18n/provider";
 import { LANGS } from "@/i18n";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useOnForeground } from "@/lib/use-foreground";
 
 function Logo() {
   const { d } = useI18n();
@@ -76,8 +77,21 @@ function OfflineBanner() {
   );
 }
 
+/** Refetch server data when the app returns to the foreground (at most every 5 s). */
+function useRefetchOnForeground() {
+  const router = useRouter();
+  const last = useRef(0);
+  useOnForeground(() => {
+    const now = Date.now();
+    if (now - last.current < 5000) return;
+    last.current = now;
+    router.refresh();
+  });
+}
+
 export function Shell({ children }: { children: React.ReactNode }) {
   const { d } = useI18n();
+  useRefetchOnForeground();
   const isActive = useIsActive();
   const links = [
     { href: "/", label: d.nav.home, Icon: Trophy },
