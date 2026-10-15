@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/*
+ * HEAR palette (from hear.se): ink #171617, orange #ff902d, greys #555659 / #afafaf / #d7d7d7.
+ * Orange is only used as a fill (with ink text on top) or as text on the dark theme,
+ * because orange text on a light background fails WCAG contrast.
+ *
+ * Shape rule: containers and inputs use --radius (12px); toggles, chips and the
+ * primary action are full pills.
+ */
+:root {
+  --bg: #f4f4f3;
+  --surface: #fcfcfb;
+  --surface-2: #ebebea;
+  --ink: #171617;
+  --muted: #555659;
+  --line: #d7d7d7;
+  --accent: #ff902d;
+  --accent-ink: #171617;
+  --accent-soft: #ffe4cc;
+  --danger: #b42318;
+  --focus: #171617;
+  --radius: 12px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171617;
+    --surface: #201f20;
+    --surface-2: #2b2a2b;
+    --ink: #f3f3f2;
+    --muted: #afafaf;
+    --line: #3a393a;
+    --accent: #ff902d;
+    --accent-ink: #171617;
+    --accent-soft: #3d2a1a;
+    --danger: #ff8a7a;
+    --focus: #ff902d;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --radius-box: var(--radius);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Hide native number spinners; we provide our own steppers. */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter {
+    animation: enter 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
